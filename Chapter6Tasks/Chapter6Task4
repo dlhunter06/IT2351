@@ -1,0 +1,8 @@
+/* Count and Sum query used by Danielle Hunter 09/18/2022 IT2351
+ This query uses the Sum and count aggregate functions to answer how many orders are unshipped and what is the value of the orders.
+************************************************************************************************************************************/
+
+SELECT COUNT(order_id) AS "Number of Orders", 
+SUM(ship_amount) AS "Order Value"
+FROM orders
+WHERE ship_date IS NULL
