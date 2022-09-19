@@ -1,0 +1,8 @@
+/* INSERT query used by Danielle Hunter IT2351
+The purpose of this query is to insert new information into the terms table with values relating to the available columns.
+*/
+
+SELECT * FROM terms
+
+INSERT INTO terms
+VALUES (6, "Net due 120 days", 120)
