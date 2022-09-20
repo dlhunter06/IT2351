@@ -1,0 +1,7 @@
+/* Count and Sum query used by Danielle Hunter 09/19/2022 IT2351
+ This query uses the Sum and count aggregate functions to answer how many orders are there and what is the value of the orders.
+************************************************************************************************************************************/
+
+SELECT COUNT(order_id) AS "Number of Orders", 
+SUM(ship_amount) AS "Ship Value"
+FROM orders
