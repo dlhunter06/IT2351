@@ -1,7 +1,6 @@
 
 /* Group by and aggregate functions count and sum query used by Danielle Hunter 09/20/2022 IT2351
- This query uses the Sum and count aggregate functions to answer how many products there are
-in a category and the total quantity of each product.
+ This query uses the Sum aggregate function to answer total quantity of each product with an addition of ROLLUP to summarize the rows.
 ************************************************************************************************************************************/
 
 SELECT category_name, products.product_name, 
