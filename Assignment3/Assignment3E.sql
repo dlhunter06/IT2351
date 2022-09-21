@@ -1,4 +1,9 @@
 
+/* Group by and aggregate functions count and sum query used by Danielle Hunter 09/20/2022 IT2351
+ This query uses the Sum aggregate function to answer total quantity of each product with an addition of ROLLUP 
+ to summarize the rows. Some IF Grouping is used to eliminate any null values in the Category and Product columns.
+************************************************************************************************************************************/
+
 
 SELECT IF(Grouping(category_name) = 1,'Grand Totals', category_name)
           AS Category,
