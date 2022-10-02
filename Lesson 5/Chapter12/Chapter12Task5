@@ -1,0 +1,19 @@
+/*CREATE VIEW query used by Danielle Hunter 10/02/2022 IT2351
+ This query is used to create a virtual table.
+ A view can show information from columns of multiple tables as one table.
+***************************************************************************************************/
+
+CREATE OR REPLACE VIEW customer_purchases AS
+SELECT DISTINCT customer_id, o.order_id, o.product_id,p.product_name
+FROM orders 
+JOIN order_items o
+ON orders.order_id = o.order_id
+RIGHT OUTER JOIN products p
+ON o.product_id = p.product_id
+WHERE customer_id IS NOT NULL;
+
+SELECT `customer_purchases`.`customer_id`,
+    `customer_purchases`.`order_id`,
+    `customer_purchases`.`product_id`,
+    `customer_purchases`.`product_name`
+FROM `danielle_guitar_shop`.`customer_purchases`;
