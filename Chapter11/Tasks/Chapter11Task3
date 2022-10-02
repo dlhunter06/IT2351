@@ -1,0 +1,7 @@
+/*CREATE INDEX query used by Danielle Hunter 10/02/2022 IT2351
+ This query is used to retrieve data from the database more quickly. 
+ The indexes can't be seen.
+***************************************************************************************************/
+
+CREATE INDEX vend_zipcode
+ON vendors (vendor_zip_code);
