@@ -1,0 +1,38 @@
+ /*Stored function script named get_balance_due
+ used by Danielle Hunter 10/09/2022 IT2351
+ This script creates a stored function that calculates the
+ balance due for the invoice_id that is entered as the parameter
+ then returns that calculation for that invoice_id
+ as a balance due.
+************************************************************************************************************************************/
+
+ 
+ USE ap;
+ 
+ DROP FUNCTION IF EXISTS get_balance_due;
+ 
+ DELIMITER //
+ 
+ CREATE FUNCTION get_balance_due
+ (
+    invoice_id_param INT
+ )
+ RETURNS DECIMAL (9,2)
+ DETERMINISTIC READS SQL DATA
+ BEGIN
+    DECLARE balance_due_var DECIMAL (9,2);
+    
+    SELECT invoice_total - payment_total - credit_total
+    INTO balance_due_var
+    FROM invoices
+    WHERE invoice_id = invoice_id_param;
+    
+    RETURN balance_due_var;
+END//
+    
+    DELIMITER ;
+    
+    SELECT vendor_id, invoice_number,
+		get_balance_due(invoice_id) AS balance_due
+	FROM invoices
+    WHERE vendor_id = 37
