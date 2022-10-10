@@ -1,0 +1,30 @@
+ /*Stored procedure script named test used by Danielle Hunter 10/09/2022 IT2351
+ This script creates a stored procedure called test to show how many 
+ invoices have a balance due from the invoices table.
+************************************************************************************************************************************/
+
+ 
+ USE ap;
+ 
+ DROP PROCEDURE IF EXISTS tets;
+ 
+ DELIMITER //
+ 
+ CREATE PROCEDURE test()
+ BEGIN
+	DECLARE sum_balance_due_var DECIMAL (9, 2);
+	DECLARE count_invoice_id INT;
+    
+    SELECT SUM(invoice_total - payment_total - credit_total),
+    COUNT(invoice_id)
+    INTO sum_balance_due_var, count_invoice_id
+    FROM invoices;
+    
+    IF sum_balance_due_var > 6000 THEN
+		SELECT count_invoice_id AS 'Number of invoices with balances';
+	END IF;
+END//
+    
+    DELIMITER ;
+    
+    CALL test();
