@@ -1,0 +1,33 @@
+ /*Stored procedure script named handle used by Danielle Hunter 10/09/2022 IT2351
+ This script creates a stored procedure called handle to use a 
+ continue handler if a duplicate key is encountered and displays
+a message that a duplicate was recieved and does not create the row.
+************************************************************************************************************************************/
+
+ 
+ USE ap;
+ 
+ DROP PROCEDURE IF EXISTS handle;
+ 
+ DELIMITER //
+ 
+ CREATE PROCEDURE handle()
+ BEGIN
+	DECLARE duplicate_entry_for_key TINYINT DEFAULT FALSE;
+    
+	DECLARE CONTINUE HANDLER FOR 1062
+		SET duplicate_entry_for_key = TRUE;
+        
+    INSERT INTO general_ledger_accounts VALUES (130, 'Cash');
+    
+    IF duplicate_entry_for_key = TRUE THEN
+		SELECT 'Row was not inserted - duplicate key encountered.'
+        AS message;
+    ELSE 
+		SELECT '1 row was inserted.' AS message;
+     END IF;  
+END//
+    
+    DELIMITER ;
+    
+    CALL handle();
