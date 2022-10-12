@@ -1,0 +1,51 @@
+/*Stored procedure script named test in the ap database
+ used by Danielle Hunter 10/11/2022 IT2351
+ This script creates a stored procedure that is a transaction into
+ the invoice table and invoice line items. The invoice insert
+ records the transaction for a vendor and the dates it took place.
+ The invoice line items breaks down the transaction and what was 
+ purchased and for how much that adds up for the invoice table line.
+************************************************************************************************************************************/
+
+ 
+ USE ap; # States that the information needed is in the ap database
+ 
+ DROP PROCEDURE IF EXISTS test; # Delete the procedure test if it exists
+ 
+ DELIMITER // # Changes the delimiter from a semi-colon to forward slashes to indicate that the statements are all apart of the procedure and it is all compiled
+ 
+ CREATE PROCEDURE test() # Creates the procedure test
+ BEGIN # Start of the procedure 
+    DECLARE sql_error TINYINT DEFAULT FALSE; # Declaring that the sql error is not duplicate information 
+    
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+		SET sql_error = TRUE;  # After the error is found and addressed continue to execute the procedure
+        
+    START TRANSACTION;  #Start of the statements that are to be executed 
+    
+    INSERT INTO invoices  # Insert the new row into the invoices table 
+    VALUES (115, 34, 'ZXA-080', '2018-01-18', 
+			14092.59, 0, 0, 3, '2018-04-18', NULL); # The corresponding values go into each column in the table 
+            
+            
+    INSERT INTO invoice_line_items # Insert the new row into the invoice_line_items table 
+    VALUES (115, 1, 160, 4447.23, 'HW upgrade'); # The corresponding values go into each column in the table
+    
+    INSERT INTO invoice_line_items # Insert the new row into the invoice_line_items table 
+    VALUES (115, 1, 167, 9645.36, 'OS upgrade'); # The corresponding values go into each column in the table
+    
+    IF sql_error = FALSE THEN  #If there is no sql_error
+		COMMIT; # Make the changes to the table
+        SELECT 'The transaction was committed.'; # Message displayed when the change is permanently made
+	ELSE # If there is an error
+    
+		ROLLBACK; # reset the table to its original state and do not save the change
+        SELECT 'The transaction was rolled back.'; # Message displayed when the change is not saved and the table is reverted to original look
+	END IF; # End of if statement
+END// # END of the procedure
+    
+		
+    DELIMITER ; # Change the delimiter back to a semicolon
+    
+   
+  
