@@ -1,0 +1,20 @@
+/*EVENT script named monthly_delete_audit_rows
+ used by Danielle Hunter 10/16/2022 IT2351
+ This event executes every month.
+************************************************************************************************************************************/
+
+USE ap;
+
+SET GLOBAL event_scheduler = ON /*Variable turning on the event scheduler */
+
+DELIMITER //
+
+CREATE EVENT monthly_delete_audit_rows /*Creation of the event scheduler */
+ON SCHEDULE EVERY 1 MONTH /*Scheduled to happen every month */
+STARTS '2018-06-01' /*Start date of the event scheduler */
+DO BEGIN /*Line for the beginning of the event */
+	DELETE FROM invoices_audit WHERE action_date < NOW() - INTERVAL 1 MONTH; /*Statement that deletes all rows from the invoice table that is more than a month old*/
+END// /*end of event */
+    
+    DELIMITER ;
+    
