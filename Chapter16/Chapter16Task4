@@ -1,0 +1,35 @@
+ /*Stored trigger script named invoices_before_update
+ used by Danielle Hunter 10/16/2022 IT2351
+ This script creates a stored trigger that alerts a message
+ before an update if the two values of the line item total and the
+ invoice total for a specific invoice id does not match.
+************************************************************************************************************************************/
+
+USE ap;
+ 
+ DROP TRIGGER IF EXISTS invoices_before_update;
+
+DELIMITER //
+
+CREATE TRIGGER invoices_before_update  /*Creating a trigger named invoices before update*/
+	BEFORE UPDATE ON invoices /*The trigger time is to happen before the update event on the invoices table */
+    FOR EACH ROW /*Each row is to be checked*/
+BEGIN
+	DECLARE sum_line_item_amount DECIMAL(9,2); /*declaring the variable type for the sum_line_item_amount*/
+    
+    SELECT SUM(line_item_amount) /* selecting the sum of the line item amount column in the invoice line items table*/
+    INTO sum_line_item_amount /*Adding the sum value into the new variable */
+    FROM invoice_line_items /*The table that the information is from*/
+    WHERE invoice_id = NEW.invoice_id; /*Condition where the invoice id from the old row is equal to the invoice id of the new row*/
+    
+    IF sum_line_item_amount != NEW.invoice_total THEN /*If statement with condition if sum_line_item_amount is not equal to the new row invoice total */
+		SIGNAL SQLSTATE 'HY000' /*The trigger raises an error code */
+			SET MESSAGE_TEXT = 'Line item total must match invoice total.'; /*Display of message if error is triggered*/
+		END IF; /*end of if statement*/
+	END// /*end of trigger*/
+    
+    DELIMITER ;
+    
+    UPDATE invoices  /*call to update invoices*/
+    SET invoice_total = 600 /*setting invoice total value*/
+    WHERE invoice_id = 100 /*for invoice id of 100*/
