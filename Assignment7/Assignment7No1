@@ -1,0 +1,38 @@
+/*Stored trigger script named products_before_update 
+ used by Danielle Hunter 10/18/2022 IT2351
+ This script creates a stored trigger called products_before_update 
+ to show an updated value to the list price in the products table
+ if the price is higher than 1100 or lower than 200 an error message
+ is given.
+************************************************************************************************************************************/
+
+
+
+USE danielle_guitar_shop;
+
+DROP TRIGGER IF EXISTS products_before_update;
+
+DELIMITER //
+
+CREATE TRIGGER products_before_update
+	BEFORE UPDATE ON products
+    FOR EACH ROW
+BEGIN
+    
+    IF NEW.list_price > 1100 THEN
+		SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'list price is higher than 1100.';
+            
+    ELSE IF NEW.list_price < 200 THEN
+		SIGNAL SQLSTATE 'HY000'
+			SET MESSAGE_TEXT = 'list price is lower than 200.';
+        END IF;
+	END IF;
+END//
+
+	DELIMITER ;
+    
+    UPDATE products
+    SET list_price = 175
+    WHERE product_id = 3
+	
