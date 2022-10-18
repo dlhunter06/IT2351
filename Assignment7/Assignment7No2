@@ -1,0 +1,28 @@
+ /*Stored event script named insert_test_row 
+ used by Danielle Hunter 10/18/2022 IT2351
+ This script creates a stored event called insert_test_row
+ to scheduled one time event of a new row into the categories table.
+ A show events statement then lists all the events available in the 
+ guitar database.
+************************************************************************************************************************************/
+
+
+
+USE danielle_guitar_shop;
+
+DROP EVENT IF EXISTS insert_test_row;
+
+DELIMITER //
+
+CREATE EVENT insert_test_row
+	ON SCHEDULE AT NOW() + INTERVAL 1 MONTH 
+    
+DO BEGIN
+    
+    INSERT INTO categories VALUES(17, 'Neo Soul');
+END//
+
+	DELIMITER ;
+    
+    
+	SHOW EVENTS IN danielle_guitar_shop
